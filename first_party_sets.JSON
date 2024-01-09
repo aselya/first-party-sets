@@ -1,7 +1,6 @@
 {
   "sets": [
-          {
-      "contact": "dmarti@raptive.com",
+          {"contact": "dmarti@raptive.com",
       "primary": "https://cafemedia.com",
       "associatedSites": [
         "https://cardsayings.net",
