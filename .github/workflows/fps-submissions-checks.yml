@@ -33,6 +33,9 @@ jobs:
       - name: Content check
         id: check
         run: python3 main/check_sites.py -i pull-request/first_party_sets.JSON --data_directory=main --with_diff > results.txt
+      - name: print path
+        run: echo $PATH
+        shell: bash 
       - name: Prettier Env Setup
         uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -40,11 +43,12 @@ jobs:
             node-version: 16
       - name: Install prettier
         run: npm install --save-dev --save-exact prettier
-      - name: print path
+      - name: print path 2
         run: echo $PATH
         shell: bash 
-      - name: Run prettier check
-        run: yarn prettier --check
+      - name: Run prettier check 
+        run: npm prettier --check
+        shell: bash
       - name: Update file if prettier check fails
         if: ${{failure()}}
         run: cat "Prettier check failed" > results.txt
