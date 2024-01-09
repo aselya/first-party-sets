@@ -39,9 +39,9 @@ jobs:
         with: 
             node-version: 16
       - name: Install prettier
-        run: npx install -g prettier
+        run: npm install -global prettier
       - name: Run prettier check
-        run: npx prettier --check pull-request/first_party_sets.JSON
+        run: npm prettier --check '**/*.JSON'
       - name: Update file if prettier check fails
         if: ${{failure()}}
         run: cat "Prettier check failed" > results.txt
