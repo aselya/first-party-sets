@@ -48,11 +48,12 @@ jobs:
         shell: bash 
       - name: Run prettier check 
         continue-on-error: true
-        run: prettier "**/first_party_sets.JSON" --check 
+        run: prettier "**/first_party_sets.JSON" --check
         shell: bash
-      - name: Prettier fail check
+      - name: Evaluate prettier
         if: ${{ failure() }}
-        run: echo 'Prettier check failed' | cat - result.txt > temp && mv temp result.txt
+        run: echo "Prettier Check failed" >> results.txt
+        shell: bash
       - name: Read the result
         id: read_results
         uses: andstor/file-reader-action@v1
