@@ -33,9 +33,6 @@ jobs:
       - name: Content check
         id: check
         run: python3 main/check_sites.py -i pull-request/first_party_sets.JSON --data_directory=main --with_diff > results.txt
-      - name: print path
-        run: echo $PATH
-        shell: bash 
       - name: Prettier Env Setup
         uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -43,17 +40,10 @@ jobs:
             node-version: 16
       - name: Install prettier
         run: npm install --global prettier
-      - name: print path 2
-        run: echo $PATH
-        shell: bash 
       - name: Run prettier check 
         continue-on-error: true
         shell: bash
-        run: prettier_output=$(< <(prettier "**/first_party_sets.JSON" --check))
-      - name: Evaluate prettier
-        if: ${{ failure() }}
-        run: prettier_output >> results.txt
-        shell: bash
+        run: prettier "**/first_party_sets.JSON" --check >> results.txt
       - name: Read the result
         id: read_results
         uses: andstor/file-reader-action@v1
