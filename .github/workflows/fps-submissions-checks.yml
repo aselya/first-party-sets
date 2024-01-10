@@ -47,7 +47,7 @@ jobs:
         run: echo $PATH
         shell: bash 
       - name: Run prettier check 
-        run: npm run prettier-check .
+        run: npm prettier "**/pull-request/**/*.JSON" --check
       - name: Update file if prettier check fails
         if: ${{failure()}}
         run: cat "Prettier check failed" > results.txt
