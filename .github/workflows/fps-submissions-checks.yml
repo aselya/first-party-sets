@@ -42,12 +42,12 @@ jobs:
         with: 
             node-version: 16
       - name: Install prettier
-        run: npm install prettier
+        run: npm install -g prettier
       - name: print path 2
         run: echo $PATH
         shell: bash 
       - name: Run prettier check 
-        run: prettier --check
+        run: npm run prettier-check
         shell: bash
       - name: Update file if prettier check fails
         if: ${{failure()}}
