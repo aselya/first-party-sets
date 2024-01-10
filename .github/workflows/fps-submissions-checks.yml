@@ -47,7 +47,7 @@ jobs:
         run: echo $PATH
         shell: bash 
       - name: Run prettier check 
-        run: prettier "**/pull-request/**/*.JSON" --check
+        run: prettier "**/first_party_sets.JSON" --check
         shell: bash
       - name: Update file if prettier check fails
         if: ${{failure()}}
