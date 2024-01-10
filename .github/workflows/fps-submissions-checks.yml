@@ -47,6 +47,7 @@ jobs:
         run: echo $PATH
         shell: bash 
       - name: Run prettier check 
+        continue-on-error: true
         run: prettier "**/first_party_sets.JSON" --check >> results.txt
         shell: bash
       - name: Read the result
