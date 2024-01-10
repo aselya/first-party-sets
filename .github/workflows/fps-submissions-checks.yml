@@ -49,9 +49,6 @@ jobs:
       - name: Run prettier check 
         run: prettier "**/first_party_sets.JSON" --check
         shell: bash
-      - name: Update file if prettier check fails
-        if: ${{failure()}}
-        run: cat "Prettier check failed" > results.txt
       - name: Read the result
         id: read_results
         uses: andstor/file-reader-action@v1
