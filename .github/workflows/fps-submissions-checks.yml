@@ -42,7 +42,7 @@ jobs:
         with: 
             node-version: 16
       - name: Install prettier
-        run: npm install prettier --save-exact
+        run: npm install --global prettier
       - name: print path 2
         run: echo $PATH
         shell: bash 
