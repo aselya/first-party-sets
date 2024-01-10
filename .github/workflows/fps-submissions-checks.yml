@@ -42,12 +42,12 @@ jobs:
         with: 
             node-version: 16
       - name: Install prettier
-        run: npm install -g prettier
+        run: npm install prettier --save-exact
       - name: print path 2
         run: echo $PATH
         shell: bash 
       - name: Run prettier check 
-        run: npm run prettier-check pull-request/first_party_sets.JSON
+        run: npm run prettier-check .
       - name: Update file if prettier check fails
         if: ${{failure()}}
         run: cat "Prettier check failed" > results.txt
