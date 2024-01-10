@@ -48,11 +48,11 @@ jobs:
         shell: bash 
       - name: Run prettier check 
         continue-on-error: true
-        run: prettier "**/first_party_sets.JSON" --check
         shell: bash
+        run: prettier_output=$(< <(prettier "**/first_party_sets.JSON" --check))
       - name: Evaluate prettier
         if: ${{ failure() }}
-        run: echo "Prettier Check failed" >> results.txt
+        run: prettier_output >> results.txt
         shell: bash
       - name: Read the result
         id: read_results
