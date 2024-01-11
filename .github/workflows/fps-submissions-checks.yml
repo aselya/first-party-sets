@@ -43,7 +43,7 @@ jobs:
       - name: Run prettier check 
         continue-on-error: true
         shell: bash
-        run: prettier "**/first_party_sets.JSON" --check >> results.txt
+        run: if prettier "**/first_party_sets.JSON" --check | grep -q "unformatted"; then  "Prettier check failed, run prettier and try again." >> results.txt fi
       - name: Read the result
         id: read_results
         uses: andstor/file-reader-action@v1
