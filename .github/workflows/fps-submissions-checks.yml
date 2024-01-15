@@ -46,10 +46,9 @@ jobs:
         run: |
          output=$(prettier "**/first_party_sets.JSON" --check)
          if [[ $(echo "$output" | grep -q "Run Prettier to fix"]]; then
-         sed -i '1s/^/$output\n/' results.txt
+         echo "prettier check failed"
+         sed -i "1s/^/$output\n/" results.txt
          fi
-      - name: Check prettier results
-        run: echo "$output"
       - name: Read the result
         id: read_results
         uses: andstor/file-reader-action@v1
