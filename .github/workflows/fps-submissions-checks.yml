@@ -43,8 +43,7 @@ jobs:
       - name: Run prettier check 
         continue-on-error: true
         shell: bash
-      - run: output=$(prettier "**/first_party_sets.JSON" --check)
-      - run: echo "$output" | tee -a your_file.txt  
+        run: echo prettier "**/first_party_sets.JSON" --check
       - name: Read the result
         id: read_results
         uses: andstor/file-reader-action@v1
