@@ -45,9 +45,9 @@ jobs:
         shell: bash
         run: |
          output=$(prettier "**/first_party_sets.JSON" --check)
-         if [[ $(echo "$output" | grep -q "Run Prettier to fix"]]; then
+         if [[ $($output | grep "fix"]]; then
          echo "prettier check failed"
-         sed -i "1s/^/$output\n/" results.txt
+         sed -i "1i$output" results.txt
          fi
       - name: Read the result
         id: read_results
