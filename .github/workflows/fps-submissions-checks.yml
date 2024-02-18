@@ -47,13 +47,13 @@ jobs:
         run: |
          output=$(prettier "**/first_party_sets.JSON" --check)
          if echo "$output" | grep -q "Run Prettier to fix"; then 
-           echo "Prettier check failed"
-           echo "$output"
+           echo "Prettier action check failed"
+           echo "prettier_result=$output" >> "$GITHUB_ENV"
            echo "$output" >> $GITHUB_OUTPUT 
          else
-           echo "Prettier check passed"
+           echo "Prettier action check passed"
            echo "success"
-           echo "success" >> $GITHUB_OUTPUT 
+           echo "prettier_result=success" >> "$GITHUB_ENV"
          fi
       - name: Read the result
         id: read_results
@@ -70,11 +70,11 @@ jobs:
          echo "It appears you have failed some tests. Here are your results:" > message.txt
          cat results.txt >> message.txt   
       - name: Add Prettier Results to Comment
-        if: steps.prettier_check.outputs.prettier_output != 'success'
+        if: echo "$prettier_result" != 'success'
         run: |
          echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
-         echo "${{steps.prettier_check.outputs.prettier_output}}"
-         echo  "${{steps.prettier_check.outputs.prettier_output}}" >> message.txt 
+         echo "The result: {$prettier_result}"
+         echo  "{$prettier_result}" >> message.txt 
       - name: Comment if sucess
         if: steps.read_results.outputs.contents == 'success' && steps.prettier_check.outputs.prettier_output == 'success'
         run: echo "Looks like you've passed all of the checks!" >> message.txt
