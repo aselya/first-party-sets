@@ -46,9 +46,9 @@ jobs:
         run: |
          output=$(prettier "**/first_party_sets.JSON" --check)
          if [[ $(echo "$output" | grep -q "Run Prettier to fix") ]]; then
-         echo "prettier check failed file bing created"
+         echo "prettier check failed file being created"
          touch prettierOutput.txt
-         Soutput >> prettierOutput.txt
+         $output >> prettierOutput.txt
          else
          echo "prettier check passed"
          fi
