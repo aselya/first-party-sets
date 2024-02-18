@@ -48,12 +48,12 @@ jobs:
          output=$(prettier "**/first_party_sets.JSON" --check)
          if echo "$output" | grep -q "Run Prettier to fix"; then 
            echo "Prettier action check failed"
-           echo "prettier_result=$output" >> "$GITHUB_ENV"
+           echo "prettier_result=$output" >> $GITHUB_ENV
            echo "$output" >> $GITHUB_OUTPUT 
          else
            echo "Prettier action check passed"
            echo "success"
-           echo "prettier_result=success" >> "$GITHUB_ENV"
+           echo "prettier_result=success" >> $GITHUB_ENV
          fi
       - name: Read the result
         id: read_results
