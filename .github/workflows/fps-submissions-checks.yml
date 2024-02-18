@@ -70,7 +70,7 @@ jobs:
          echo "It appears you have failed some tests. Here are your results:" > message.txt
          cat results.txt >> message.txt   
       - name: Add Prettier Results to Comment
-        if: echo "$prettier_result" != 'success'
+        if: $prettier_result != 'success'
         run: |
          echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
          echo "The result: {$prettier_result}"
