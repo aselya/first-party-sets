@@ -70,7 +70,7 @@ jobs:
       - name: Add Prettier Results to Comment
         if: steps.prettier_check.outputs.prettier_output != 'success'
         run: |
-         echo "It appears you have failed the prettier check. Here are your results:" > message.txt
+         echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
          cat  steps.prettier_check.outputs.prettier_output >> message.txt 
       - name: Comment if sucess
         if: steps.read_results.outputs.contents == 'success' && steps.prettier_check.outputs.prettier_output == 'success'
