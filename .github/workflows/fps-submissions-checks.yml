@@ -33,11 +33,11 @@ jobs:
       - name: Content check
         id: check
         run: python3 main/check_sites.py -i pull-request/first_party_sets.JSON --data_directory=main --with_diff > results.txt
-      - name: Prettier Env Setup
-        uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with: 
-            node-version: 16
+     # - name: Prettier Env Setup
+     #   uses: actions/checkout@v3
+     # - uses: actions/setup-node@v3
+     #   with: 
+     #       node-version: 16
       - name: Install prettier
         run: npm install --global prettier
       - name: Run prettier check 
