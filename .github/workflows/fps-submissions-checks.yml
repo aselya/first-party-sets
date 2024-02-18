@@ -73,8 +73,8 @@ jobs:
         if: steps.prettier_check.outputs.prettier_output != 'success'
         run: |
          echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
-         echo "The result: $prettier_result"
-         echo  "$prettier_result" >> message.txt 
+         echo steps.prettier_check.outputs.prettier_output
+         steps.prettier_check.outputs.prettier_output >> message.txt 
       - name: Comment if sucess
         if: steps.read_results.outputs.contents == 'success' && steps.prettier_check.outputs.prettier_output == 'success'
         run: echo "Looks like you've passed all of the checks!" >> message.txt
