@@ -40,12 +40,22 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-         output=$(prettier "**/first_party_sets.JSON" --check)
-         echo "$output"
-         files_to_reformat=$(echo "$output" | grep -v "Checking formatting...")
-         echo "files_to_reformat: $files_to_reformat"
-         echo "files=$files_to_reformat" >> $GITHUB_ENV
-         echo "files: $files"
+         prettier_output=$(prettier "**/first_party_sets.JSON" --check)
+         echo "prettier output: $prettier_output"
+         files_to_reformat=$(echo "$prettier_output" | grep -v "Checking formatting...")
+         echo "files_to_reformat output: $files_to_reformat"
+         echo "prettier_files=$files_to_reformat" >> $GITHUB_ENV
+         - run: echo "prettier_files env variable is: $prettier_files" 
+
+
+
+
+        #output=$(prettier "**/first_party_sets.JSON" --check)
+         #echo "$output"
+         #files_to_reformat=$(echo "$output" | grep -v "Checking formatting...")
+         #echo "files_to_reformat: $files_to_reformat"
+         #echo "files=$files_to_reformat" >> $GITHUB_ENV
+         #echo "files: $files"
         # if echo "$output" | grep -q "Run Prettier to fix"; then 
         #   echo "Prettier action check failed"
         #   echo $output
@@ -74,12 +84,12 @@ jobs:
       - name: Add Prettier Results to Comment
         #if: steps.prettier_check.outputs.prettier_output != 'success'
         run: |
-          if [[ -z "$env.files" ]]; then
+          if [[ -z "$prettier_files" ]]; then
           echo "All files are formatted correctly!"
           else
           echo "Formatting issues found."
-          echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
-          echo "$env.files" >> message.txt
+          echo "You have failed the prettier check. Here are your results:" >> message.txt
+          echo "$prettier_files" >> message.txt
           fi
         
         # echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
