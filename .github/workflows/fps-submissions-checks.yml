@@ -40,18 +40,23 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-         output=$(prettier "**/first_party_sets.JSON" --check)
-         if echo "$output" | grep -q "Run Prettier to fix"; then 
-           echo "Prettier action check failed"
-           echo $output
-           echo "prettier_result=$output" >> $GITHUB_ENV
-           echo $output >> $GITHUB_OUTPUT 
-         else
-           echo "Prettier action check passed"
-           echo "success"
-           echo $output
-           echo "prettier_result=success" >> $GITHUB_ENV
-         fi
+         output=$(prettier --check "**/first_party_sets.JSON")
+         echo "$output"
+         files_to_reformat=$(echo "$output" | grep -v "Checking formatting...")
+         echo "files=$files_to_reformat" >> $GITHUB_ENV
+         echo "$files"
+
+        # if echo "$output" | grep -q "Run Prettier to fix"; then 
+        #   echo "Prettier action check failed"
+        #   echo $output
+        #   echo "prettier_result=$output" >> $GITHUB_ENV
+        #   echo $output >> $GITHUB_OUTPUT 
+        # else
+        #   echo "Prettier action check passed"
+        #   echo "success"
+        #   echo $output
+        #   echo "prettier_result=success" >> $GITHUB_ENV
+        # fi
       - name: Read the result
         id: read_results
         uses: andstor/file-reader-action@v1
@@ -67,16 +72,24 @@ jobs:
          echo "It appears you have failed some tests. Here are your results:" > message.txt
          cat results.txt >> message.txt   
       - name: Add Prettier Results to Comment
-        if: steps.prettier_check.outputs.prettier_output != 'success'
+        #if: steps.prettier_check.outputs.prettier_output != 'success'
         run: |
-         echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
-         echo "$prettier_result"
-         echo "$prettier_result" >> message.txt
-         echo "Using output"
-         echo ${{ steps.prettier_check.outputs.prettier_output }}
-         echo ${{ steps.prettier_check.outputs.prettier_output }} >> message.txt
+          if [[ -z "$files" ]]; then
+          echo "All files are formatted correctly!"
+          else
+          echo "Formatting issues found."
+          echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
+          echo "$files" >> message.txt
+          fi
+        
+        # echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
+        # echo "$prettier_result"
+        # echo "$prettier_result" >> message.txt
+        # echo "Using output"
+        # echo ${{ steps.prettier_check.outputs.prettier_output }}
+        # echo ${{ steps.prettier_check.outputs.prettier_output }} >> message.txt
       - name: Comment if sucess
-        if: steps.read_results.outputs.contents == 'success' && steps.prettier_check.outputs.prettier_output == 'success'
+        if: steps.read_results.outputs.contents == 'success' && ${{ env.files }}
         run: echo "Looks like you've passed all of the checks!" >> message.txt
       - name: Write Comment on PR
         uses: mshick/add-pr-comment@v2
@@ -84,7 +97,7 @@ jobs:
           message-path: "message.txt" 
           refresh-message-position: true
       - name: Fail or Succeed
-        if: steps.read_results.outputs.contents != 'success' || steps.prettier_check.outputs.prettier_output != 'success'
+        if: steps.read_results.outputs.contents != 'success' || !${{ env.files }}
         uses: actions/github-script@v3
         with:
           script: |
