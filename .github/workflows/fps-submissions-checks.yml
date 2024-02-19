@@ -41,11 +41,23 @@ jobs:
         shell: bash
         run: |
          prettier_output=$(prettier "**/first_party_sets.JSON" --check)
+         # Print for visibility 
          echo "prettier output: $prettier_output"
+         # Get files that need to be formatted
          files_to_reformat=$(echo "$prettier_output" | grep -v "Checking formatting...")
-         echo "files_to_reformat output: $files_to_reformat"
-         echo "prettier_files=$files_to_reformat" >> $GITHUB_ENV
-         - run: echo "prettier_files env variable is: $prettier_files" 
+         # store in output file
+         echo "prettier_output=$files_to_reformat" >> $GITHUB_OUTPUT
+
+
+        # Store output in GITHUB_OUTPUT 
+
+        
+         #prettier_output=$(prettier "**/first_party_sets.JSON" --check)
+         #echo "prettier output: $prettier_output"
+         #files_to_reformat=$(echo "$prettier_output" | grep -v "Checking formatting...")
+         #echo "files_to_reformat output: $files_to_reformat"
+         #echo "prettier_files=$files_to_reformat" >> $GITHUB_ENV
+         #- run: echo "prettier_files env variable is: $prettier_files" 
 
 
 
@@ -82,15 +94,10 @@ jobs:
          echo "It appears you have failed some tests. Here are your results:" > message.txt
          cat results.txt >> message.txt   
       - name: Add Prettier Results to Comment
-        #if: steps.prettier_check.outputs.prettier_output != 'success'
+        if: steps.prettier_check.outputs.prettier_output != ''
         run: |
-          if [[ -z "$prettier_files" ]]; then
-          echo "All files are formatted correctly!"
-          else
-          echo "Formatting issues found."
           echo "You have failed the prettier check. Here are your results:" >> message.txt
           echo "$prettier_files" >> message.txt
-          fi
         
         # echo "It appears you have failed the prettier check. Here are your results:" >> message.txt
         # echo "$prettier_result"
@@ -99,7 +106,7 @@ jobs:
         # echo ${{ steps.prettier_check.outputs.prettier_output }}
         # echo ${{ steps.prettier_check.outputs.prettier_output }} >> message.txt
       - name: Comment if sucess
-        if: steps.read_results.outputs.contents == 'success' && ${{ env.files }}
+        if: steps.read_results.outputs.contents == 'success' && steps.prettier_check.outputs.prettier_output == ''
         run: echo "Looks like you've passed all of the checks!" >> message.txt
       - name: Write Comment on PR
         uses: mshick/add-pr-comment@v2
