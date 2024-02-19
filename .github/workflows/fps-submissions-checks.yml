@@ -41,7 +41,12 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-         echo "prettier_output=$(prettier "**/first_party_sets.JSON" --check | grep -v "Checking formatting...")" >> $GITHUB_OUTPUT
+          prettier_output=$(prettier "**/first_party_sets.JSON" --check)
+          echo "prettier output: $prettier_output"
+          files_to_reformat=$(echo "$prettier_output" | grep -v "Checking formatting...")
+          echo "files_to_reformat output: $files_to_reformat"
+          echo "prettier_output=$files_to_reformat" >> $GITHUB_OUTPUT 
+        # echo "prettier_output=$(prettier "**/first_party_sets.JSON" --check | grep -v "Checking formatting...")" >> $GITHUB_OUTPUT
 
         
         # prettier_output=$(prettier "**/first_party_sets.JSON" --check)
