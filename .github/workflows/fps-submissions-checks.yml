@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       output1: ${{ steps.read_results.outputs.contents }}
+      output2: ${{ steps.prettier_check.outputs.prettier_output}}
     steps:
       - name: Get the PR version of the files
         uses: actions/checkout@v2
@@ -42,7 +43,8 @@ jobs:
         run: |
          prettier_output=$(prettier "**/first_party_sets.JSON" --check)
          # Print for visibility 
-         echo "prettier output: $prettier_output"
+         echo "prettier output:"
+         echo $prettier_output"
          # Get files that need to be formatted
          files_to_reformat=$(echo "$prettier_output" | grep -v "Checking formatting...")
          # store in output file
@@ -114,7 +116,7 @@ jobs:
           message-path: "message.txt" 
           refresh-message-position: true
       - name: Fail or Succeed
-        if: steps.read_results.outputs.contents != 'success' || !${{ env.files }}
+        if: steps.read_results.outputs.contents != 'success' || steps.prettier_check.outputs.prettier_output != ''
         uses: actions/github-script@v3
         with:
           script: |
