@@ -14,7 +14,7 @@
 name: FPS submission checks
 on: 
   schedule:
-   - cron: '2 * * * *'
+   - cron: '5 * * * *'
   pull_request_target:
 jobs:
   PR-Actions:
