@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 name: FPS submission checks
-on: pull_request_target
+on: 
+  schedule:
+   - cron: '2 * * * *'
+  pull_request_target:
 jobs:
   PR-Actions:
     runs-on: ubuntu-latest
